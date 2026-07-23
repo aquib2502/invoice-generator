@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --host --port 3000",
+    "start": "vite preview --host 0.0.0.0 --port 3000",
+    "docker:build": "docker build -t tpf-invoice-generator .",
+    "docker:run": "docker run -d -p 8080:80 --name tpf-invoice-generator tpf-invoice-generator"
   },
   "dependencies": {
     "date-fns": "^3.6.0",
