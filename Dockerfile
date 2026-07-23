@@ -1,38 +1,25 @@
-# ==========================================
-# STAGE 1: Build static assets with Node.js
-# ==========================================
-FROM node:20-alpine AS builder
-
+# -------- Builder --------
+FROM node:20-slim AS builder
 WORKDIR /app
 
-# Copy dependency files
 COPY package*.json ./
-
-# Install dependencies cleanly
 RUN npm ci
 
-# Copy source files
 COPY . .
-
-# Build production bundle
 RUN npm run build
 
-# ==========================================
-# STAGE 2: Serve static assets with Nginx
-# ==========================================
-FROM nginx:alpine
 
-# Remove default nginx static assets
-RUN rm -rf /usr/share/nginx/html/*
+# -------- Runtime --------
+FROM node:20-slim
+WORKDIR /app
 
-# Copy built dist files from builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+ENV NODE_ENV=production
+ENV PORT=4786
 
-# Copy custom production nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY package*.json ./
+RUN npm ci --omit=dev
 
-# Expose port 80 for HTTP traffic
-EXPOSE 80
+COPY --from=builder /app/dist ./dist
 
-# Start Nginx in foreground
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 4786
+CMD ["npm", "start"]

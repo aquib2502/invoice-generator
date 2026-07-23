@@ -7,10 +7,8 @@
     "dev": "vite --host",
     "build": "tsc && vite build",
     "lint": "eslint .",
-    "preview": "vite preview --host --port 3000",
-    "start": "vite preview --host 0.0.0.0 --port 3000",
-    "docker:build": "docker build -t tpf-invoice-generator .",
-    "docker:run": "docker run -d -p 8080:80 --name tpf-invoice-generator tpf-invoice-generator"
+    "preview": "serve -s dist -l 4786",
+    "start": "serve -s dist -l 4786"
   },
   "dependencies": {
     "date-fns": "^3.6.0",
@@ -19,7 +17,8 @@
     "jspdf": "^2.5.1",
     "lucide-react": "^0.454.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "serve": "^14.2.3"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
